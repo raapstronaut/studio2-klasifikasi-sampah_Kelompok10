@@ -39,15 +39,44 @@ Konfigurasi ini merupakan rencana baseline awal dan akan diperbarui sesuai hasil
 
 | Putaran | Commit | Macro-F1 (split validasi lokal) | Macro-F1 (diumumkan asisten) |
 |---------|--------|----------------------------------|------------------------------|
-| Preview 1 (14 Okt) | - | Belum dievaluasi | - |
-| Preview 2 (21 Okt) | - | Belum dievaluasi | - |
-| Final (25 Okt) | - | Belum dievaluasi | - |
+| Preview 1 (14 Okt) | Menunggu commit | 0.9295 | Menunggu hasil |
+| Preview 2 (21 Okt) | - | - | - |
+| Final (25 Okt) | - | - | - |
+
 
 ### Catatan Eksperimen
 
 Eksperimen pertama direncanakan menggunakan ResNet-18 pretrained ImageNet sebagai baseline.
 
 Hasil training, evaluasi Macro-F1, analisis confusion matrix, dan eksperimen optimasi akan didokumentasikan setelah model dijalankan.
+
+
+### Eksperimen 01 — Baseline ResNet-18
+
+- Model: ResNet-18 pretrained ImageNet
+- Epoch: 8
+- Batch size: 32
+- Learning rate: 0.0003
+- Optimizer: AdamW
+- Jumlah gambar validasi lokal: 410
+- Macro-F1 lokal: 0.9295
+- Akurasi lokal: 0.9341
+- Waktu evaluasi: 4.6 detik
+- Ukuran checkpoint: 42.71 MB
+
+F1-score per kelas:
+- botol_plastik: 0.9474
+- gelas_plastik: 0.9494
+- kertas_kardus: 0.8738
+- saset_kemasan: 0.9353
+- styrofoam: 0.9417
+
+Kelas kertas_kardus memiliki F1-score terendah sehingga
+menjadi prioritas optimasi pada eksperimen berikutnya.
+
+Hasil ini berasal dari split validasi lokal, bukan hidden
+validation set milik tim pengajar.
+
 
 ## Cara Reproduksi
 
