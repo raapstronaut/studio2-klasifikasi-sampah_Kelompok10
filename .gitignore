@@ -1,0 +1,24 @@
+# Dataset resmi
+train/
+my_train/
+my_val/
+train_sources.csv
+
+# Arsip dataset
+*.zip
+*.rar
+*.7z
+
+# Python cache
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.venv/
+
+# Checkpoint eksperimen
+*.pth
+!submission/model.pth
+
+# File sistem
+.DS_Store
+Thumbs.db
