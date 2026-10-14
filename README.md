@@ -39,44 +39,64 @@ Konfigurasi ini merupakan rencana baseline awal dan akan diperbarui sesuai hasil
 
 | Putaran | Commit | Macro-F1 (split validasi lokal) | Macro-F1 (diumumkan asisten) |
 |---------|--------|----------------------------------|------------------------------|
-| Preview 1 (14 Okt) | Menunggu commit | 0.9295 | Menunggu hasil |
+| Preview 1 (14 Okt) | `b17b55c` | 0.9295 | Menunggu hasil |
 | Preview 2 (21 Okt) | - | - | - |
 | Final (25 Okt) | - | - | - |
 
 
 ### Catatan Eksperimen
 
-Eksperimen pertama direncanakan menggunakan ResNet-18 pretrained ImageNet sebagai baseline.
+#### Eksperimen 01 — Baseline ResNet-18
 
-Hasil training, evaluasi Macro-F1, analisis confusion matrix, dan eksperimen optimasi akan didokumentasikan setelah model dijalankan.
+Model baseline dilatih menggunakan transfer learning dengan backbone ResNet-18 pretrained ImageNet.
 
+**Konfigurasi training:**
 
-### Eksperimen 01 — Baseline ResNet-18
-
-- Model: ResNet-18 pretrained ImageNet
+- Backbone: ResNet-18 pretrained ImageNet
 - Epoch: 8
 - Batch size: 32
 - Learning rate: 0.0003
 - Optimizer: AdamW
-- Jumlah gambar validasi lokal: 410
-- Macro-F1 lokal: 0.9295
-- Akurasi lokal: 0.9341
-- Waktu evaluasi: 4.6 detik
-- Ukuran checkpoint: 42.71 MB
+- Scheduler: CosineAnnealingLR
+- Label smoothing: 0.1
+- Dataset: 2.753 gambar
+- Validasi lokal: 410 gambar
 
-F1-score per kelas:
-- botol_plastik: 0.9474
-- gelas_plastik: 0.9494
-- kertas_kardus: 0.8738
-- saset_kemasan: 0.9353
-- styrofoam: 0.9417
+**Hasil evaluasi lokal:**
 
-Kelas kertas_kardus memiliki F1-score terendah sehingga
-menjadi prioritas optimasi pada eksperimen berikutnya.
+| Metrik | Hasil |
+|--------|-------|
+| Macro-F1 | 0.9295 |
+| Akurasi | 0.9341 |
+| Waktu evaluasi | 4.6 detik |
+| Ukuran model | 42.71 MiB |
 
-Hasil ini berasal dari split validasi lokal, bukan hidden
-validation set milik tim pengajar.
+**F1-score per kelas:**
 
+| Kelas | F1-score |
+|-------|----------|
+| botol_plastik | 0.9474 |
+| gelas_plastik | 0.9494 |
+| kertas_kardus | 0.8738 |
+| saset_kemasan | 0.9353 |
+| styrofoam | 0.9417 |
+
+**Analisis:**
+
+Model mencapai Macro-F1 lokal sebesar 0.9295.
+
+Kelas kertas_kardus memiliki F1-score terendah, yaitu 0.8738. Dari 54 gambar validasi kelas tersebut, 45 berhasil diklasifikasikan dengan benar.
+
+Kelas ini akan menjadi salah satu fokus optimasi pada eksperimen berikutnya.
+
+**Audit submission:**
+
+- Commit model: b17b55c
+- Bobot GitHub identik dengan bobot lokal
+- Evaluasi berhasil menggunakan evaluate.py resmi
+- Exit code: 0
+
+Hasil di atas berasal dari split validasi lokal, bukan hidden validation set milik tim pengajar.
 
 ## Cara Reproduksi
 
