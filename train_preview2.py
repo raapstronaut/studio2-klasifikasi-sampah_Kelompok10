@@ -1,4 +1,36 @@
-if not data_dir.is_dir():
+"""Reproduksi prosedur training Preview 2 Kelompok 10 (EfficientNet-B0).
+
+Contoh:
+    python train_preview2.py --data ./train --epochs 8 --batch-size 24
+
+Checkpoint eksperimen disimpan terpisah; submission/model.pth tidak diubah.
+Hasil run ulang dapat sedikit berbeda karena proses training stokastik/GPU.
+"""
+
+import argparse
+import random
+import shutil
+from pathlib import Path
+
+import torch
+import torch.nn as nn
+from torch.utils.data import DataLoader
+from torchvision import datasets, models, transforms
+from torchvision.transforms import InterpolationMode
+
+from evaluate import CLASSES, metrics
+
+ROOT = Path(__file__).resolve().parent
+
+
+def prepare_split(data_dir: Path, seed: int, fraction: float = 0.15):
+    """Ikuti algoritma split resmi: urutkan file, acak per kelas, salin 15%."""
+    train_out, val_out = ROOT / "my_train", ROOT / "my_val"
+    if train_out.is_dir() and val_out.is_dir():
+        return train_out, val_out
+    if train_out.exists() or val_out.exists():
+        raise RuntimeError("Split tidak lengkap. Periksa my_train/ dan my_val/ sebelum melanjutkan.")
+    if not data_dir.is_dir():
         raise FileNotFoundError(f"Dataset tidak ditemukan: {data_dir}")
 
     rng = random.Random(seed)
